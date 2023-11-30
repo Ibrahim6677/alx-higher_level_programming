@@ -3,7 +3,7 @@ def magic_calculation(a, b):
     from magic_calculation_102 import add, sub
     if a < b:
         c = add(a, b)
-        for i in rang(a, 6):
+        for i in range(a, b):
             c = add(c, i)
         return c
     else:
