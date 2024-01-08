@@ -1,4 +1,4 @@
-A#!/usr/bin/python3
+#!/usr/bin/python3
 '''Module for Rectangle class.'''
 Rectangle = __import__('9-rectangle').Rectangle
 
