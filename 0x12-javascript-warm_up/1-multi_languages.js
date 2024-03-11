@@ -1,7 +1,4 @@
 #!/usr/bin/node
-let myLet = "C is fun"
-let my = "Python is cool"
-let myVar = "JavaScript is amazing"
-console.log(myLet)
-console.log(my)
-console.log(myVar)
+console.log("C is fun")
+console.log("Python is cool")
+console.log("JavaScript is amazing")
