@@ -4,14 +4,16 @@ const dict = require('./101-data').dict;
 const totalist = Object.entries(dict);
 const vals = Object.values(dict);
 const valsUniq = [...new Set(vals)];
+const sortedValsUniq = valsUniq.sort((a, b) => a - b); // ترتيب القيم من الأصغر إلى الأكبر
 const newDict = {};
-for (const j in valsUniq) {
+for (const val of sortedValsUniq) {
   const list = [];
-  for (const k in totalist) {
-    if (totalist[k][1] === valsUniq[j]) {
-      list.unshift(totalist[k][0]);
+  for (const pair of totalist) {
+    if (pair[1] === val) {
+      list.unshift(pair[0]);
     }
   }
-  newDict[valsUniq[j]] = list;
+  newDict[val] = list;
 }
 console.log(newDict);
+
