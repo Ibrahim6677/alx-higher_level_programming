@@ -14,15 +14,36 @@ request(apiUrl, (error, response, body) => {
   const movie = JSON.parse(body);
   const characterUrls = movie.characters;
 
-  characterUrls.forEach(characterUrl => {
-    request(characterUrl, (error, response, body) => {
-      if (error) {
-        console.error(error);
-        return;
-      }
-
-      const character = JSON.parse(body);
-      console.log(character.name);
+  const fetchCharacter = (url) => {
+    return new Promise((resolve, reject) => {
+      request(url, (error, response, body) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        const character = JSON.parse(body);
+        resolve(character.name);
+      });
     });
-  });
+  };
+
+  const fetchAllCharacters = async () => {
+    const characterNames = [];
+    try {
+      for (const url of characterUrls) {
+        const name = await fetchCharacter(url);
+        characterNames.push(name);
+      }
+      return characterNames;
+    } catch (err) {
+      console.error(err);
+      return [];
+    }
+  };
+
+  fetchAllCharacters()
+    .then(names => {
+      names.forEach(name => console.log(name));
+    })
+    .catch(err => console.error(err));
 });
