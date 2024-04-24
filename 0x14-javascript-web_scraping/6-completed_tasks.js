@@ -2,32 +2,32 @@
 
 const request = require('request');
 
-const apiUrl = process.argv[2];
+const url = process.argv[2];
 
-request(apiUrl, function (error, response, body) {
-  if (!error && response.statusCode === 200) {
-    try {
-      const todos = JSON.parse(body);
-
-      const completed = {};
-
-      todos.forEach((todo) => {
-        if (todo.completed) {
-          if (completed[todo.userId] === undefined) {
-            completed[todo.userId] = 1;
-          } else {
-            completed[todo.userId]++;
-          }
-        }
-      });
-
-      const output = `{${Object.entries(completed).map(([key, value]) => ` '${key}': ${value}`).join(',\n ')} }`;
-
-      console.log(Object.keys(completed).length > 2 ? output : completed);
-    } catch (parseError) {
-      console.error('Error parsing JSON:', parseError);
-    }
-  } else {
-    console.error('Error:', error);
+request(url, (error, response, body) => {
+  if (error) {
+    console.error(error);
+    return;
   }
+
+  if (response.statusCode !== 200) {
+    console.error(`Error: ${response.statusCode}`);
+    return;
+  }
+
+  const todos = JSON.parse(body);
+
+  const completedTasksByUser = {};
+
+  todos.forEach(todo => {
+    if (todo.completed) {
+      if (completedTasksByUser[todo.userId]) {
+        completedTasksByUser[todo.userId]++;
+      } else {
+        completedTasksByUser[todo.userId] = 1;
+      }
+    }
+  });
+
+  console.log(completedTasksByUser);
 });
